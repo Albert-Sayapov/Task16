@@ -38,26 +38,34 @@ public class Main {
 
         System.out.println("Ваша корзина покупок:");
         int sum = 0;
+        int sumForBous = 0;
 
         for (int i = 0; i < products.length; i++) {
-            if (counts[i] != 0) {
+            sumForBous += prices[i] * counts[i];
+        }
 
+        boolean doBonus = sumForBous >= MIN_COST_FOR_BONUS;
+
+        for (int i = 0; i < products.length; i++) {
+
+            if (counts[i] != 0) {
                 boolean isOnSale = false;
                 for (String saleProduct : productsOnSale) {
                     if (products[i].equals(saleProduct)) {
                         isOnSale = true;
                     }
                 }
+
                 if (isOnSale) {
                     sum += prices[i] * (counts[i] / 3 * 2 + counts[i] % 3);
-                    if (sum >= MIN_COST_FOR_BONUS) {
+                    if (doBonus) {
                         counts[i] += 1;
                     }
                     System.out.println("\t" + products[i] + " " + counts[i] + " шт. за " + sum + " руб. (распродажа!)");
 
                 } else {
                     sum += prices[i] * counts[i];
-                    if (sum >= MIN_COST_FOR_BONUS) {
+                    if (doBonus) {
                         counts[i] += 1;
                     }
                     System.out.println("\t" + products[i] + " " + counts[i] + " шт. за " + sum + " руб.");
